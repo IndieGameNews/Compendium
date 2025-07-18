@@ -1,3 +1,5 @@
 [
-  { "name": "Compendium", "url": "./Home.html", "category": "Websites" }
+  { "name": "Compendium", "url": "./Home.html", "category": "Websites" },
+  { "name": "fakeportal", "url": "./fakeportal.html", "category": "Websites" },
+  
 ]
