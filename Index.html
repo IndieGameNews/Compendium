@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Organized Links</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    h2 { border-bottom: 1px solid #ccc; margin-top: 30px; }
+    ul { list-style-type: none; padding-left: 0; }
+    li { margin: 5px 0; }
+    a { text-decoration: none; color: #1a0dab; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <h1>Links Organized by Category</h1>
+  <div id="content">Loading...</div>
+
+  <script>
+    // Load JSON file
+    fetch('Index.json')
+      .then(response => response.json())
+      .then(data => {
+        // Group by category
+        const grouped = {};
+
+        data.forEach(item => {
+          const category = item.category || 'Uncategorized';
+          if (!grouped[category]) {
+            grouped[category] = [];
+          }
+          grouped[category].push(item);
+        });
+
+        // Sort categories alphabetically
+        const sortedCategories = Object.keys(grouped).sort();
+
+        const container = document.getElementById('content');
+        container.innerHTML = '';
+
+        sortedCategories.forEach(category => {
+          // Create category header
+          const header = document.createElement('h2');
+          header.textContent = category;
+          container.appendChild(header);
+
+          // Sort items in category alphabetically by name
+          grouped[category].sort((a, b) => a.name.localeCompare(b.name));
+
+          // Create list of links
+          const ul = document.createElement('ul');
+          grouped[category].forEach(link => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = link.url;
+            a.textContent = link.name;
+            a.target = '_blank';
+            li.appendChild(a);
+            ul.appendChild(li);
+          });
+
+          container.appendChild(ul);
+        });
+      })
+      .catch(err => {
+        document.getElementById('content').textContent = 'Failed to load JSON: ' + err;
+        console.error(err);
+      });
+  </script>
+</body>
+</html>
